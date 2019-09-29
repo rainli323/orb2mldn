@@ -62,6 +62,10 @@
 #May 24, 2016: fixed a bug in the code so that it can handle more than 100 orbitals of
 #the same symmetry; added in the capability of dealing with G orbitals
 #
+#Mar 26, 2018: allow users to use mixed upper/lower case for atomic symbels, orbitals.dat
+#file no longer needs to match upper/lower case with gaussian formated basis file. 
+#(Note: didn't debug, but I think it should work. Jason has a version that works for sure)
+#
 ##################################################################################  
 
 use strict;
@@ -97,7 +101,7 @@ while(<FILEIN1>){
 	   if($_=~/=/){}                   #energy line, ignore
 	   else{                           #geometry coordinates
 		$IdAtom++;
-		$Atom=(split/ +/)[1];
+		$Atom=uc((split/ +/)[1]);
 		my $AtomNumTemp=(split/ +/)[2];
 		my $AtomNum=(split/\./,$AtomNumTemp)[0];
 		my $AtomXYZ=join " ", (split/ +/)[3],(split/ +/)[4],(split/ +/)[5];
@@ -124,7 +128,7 @@ while(<FILEIN2>){                #save all basis info to %Basis, keys are atomic
 	next;
    }
    if($_=~/[A-Z][a-z]?\s+0/){           #molecule line,composed of atomic simbol and  0
-	$AtomBasis=(split/ +/)[0];
+	$AtomBasis=uc((split/ +/)[0]);
 	$FlagBasis=1;
 	next;
    }
